@@ -1,31 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<widget id="com.oxford3000.wordadventure" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>أكسفورد 3000</name>
-    <description>
-        أكسفورد 3000 - مغامرة الكلمات
-    </description>
-    <author email="dev@example.com" href="https://example.com">
-        Oxford3000 Dev
-    </author>
-    <content src="index.html" />
-    <access origin="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-navigation href="*" />
-
-    <preference name="DisallowOverscroll" value="true" />
-    <preference name="android-minSdkVersion" value="22" />
-    <preference name="android-targetSdkVersion" value="34" />
-    <preference name="Orientation" value="portrait" />
-    <preference name="Fullscreen" value="false" />
-    <preference name="StatusBarOverlaysWebView" value="false" />
-    <preference name="StatusBarBackgroundColor" value="#1a103c" />
-    <preference name="BackgroundColor" value="0xff1a103c" />
-
-    <platform name="android">
-        <allow-intent href="market:*" />
-        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
-            <application android:usesCleartextTraffic="true" />
-        </edit-config>
-    </platform>
-</widget>
+{
+  "appId": "com.youssef.oxford3000",
+  "appName": "أكسفورد 3000",
+  "webDir": "www"
+}
