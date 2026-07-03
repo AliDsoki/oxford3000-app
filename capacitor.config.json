@@ -1,5 +1,8 @@
-{
-  "appId": "com.Ali.oxford3000",
-  "appName": "أكسفورد 3000",
-  "webDir": "www"
-}
+oxford3000-apk/
+├── config.xml              ← XML (إعدادات التطبيق)
+├── package.json
+├── www/
+│   └── index.html
+└── .github/
+    └── workflows/
+        └── build.yml       ← YAML (خطوات البناء)
