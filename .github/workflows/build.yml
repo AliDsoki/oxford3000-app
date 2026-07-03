@@ -1,31 +1,55 @@
-<?xml version='1.0' encoding='utf-8'?>
-<widget id="com.oxford3000.wordadventure" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>أكسفورد 3000</name>
-    <description>
-        أكسفورد 3000 - مغامرة الكلمات
-    </description>
-    <author email="dev@example.com" href="https://example.com">
-        Oxford3000 Dev
-    </author>
-    <content src="index.html" />
-    <access origin="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-navigation href="*" />
+name: Build Android APK
 
-    <preference name="DisallowOverscroll" value="true" />
-    <preference name="android-minSdkVersion" value="22" />
-    <preference name="android-targetSdkVersion" value="34" />
-    <preference name="Orientation" value="portrait" />
-    <preference name="Fullscreen" value="false" />
-    <preference name="StatusBarOverlaysWebView" value="false" />
-    <preference name="StatusBarBackgroundColor" value="#1a103c" />
-    <preference name="BackgroundColor" value="0xff1a103c" />
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch: {}
 
-    <platform name="android">
-        <allow-intent href="market:*" />
-        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
-            <application android:usesCleartextTraffic="true" />
-        </edit-config>
-    </platform>
-</widget>
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses || true
+
+      - name: Install required SDK packages
+        run: sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+      - name: Install Cordova
+        run: npm install -g cordova@12
+
+      - name: Add Android platform
+        run: cordova platform add android@12
+
+      - name: Build APK (debug)
+        run: cordova build android --verbose
+
+      - name: Locate APK
+        id: locate
+        run: |
+          APK_PATH=$(find platforms/android -name "*.apk" | head -n 1)
+          echo "apk_path=$APK_PATH" >> "$GITHUB_OUTPUT"
+          echo "Found APK at: $APK_PATH"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: oxford3000-apk
+          path: ${{ steps.locate.outputs.apk_path }}
